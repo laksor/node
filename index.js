@@ -1,6 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(cors())
 
 const users = [
     {id: 1, name: 'shabana', email: 'shaban@sha.com', phone: '017888888' },
@@ -21,6 +24,14 @@ app.get('/user/:id', (req, res) =>{
     const id = parseInt(req.params.id);
     const user = users.find(u => u.id == id);
     res.send(user)
+})
+
+app.get('/fruits', (req, res) =>{
+    res.send(['mango', 'apple', 'oranges']);
+})
+
+app.get('/fruits/mango/fazle', (req, res) =>{
+    res.send(['sour', 'sour', 'mita']);
 })
 
 app.get('/', (req, res) => {
