@@ -1,23 +1,31 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-
-
-const uri = "mongodb+srv://dbuser1:user12@cluster0.uohsa.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("express").collection("users");
-  console.log('db connected');
-  // perform actions on the collection object
-  client.close();
+const uri =
+  "mongodb+srv://dbuser1:user12@cluster0.uohsa.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
 });
-
+async function run() {
+  try {
+    await client.connect();
+    const usersCollection = client.db("Express").collection("users");
+    const user = { name: "mahiya", email: "mahiya@mahi.com" };
+    const result = await usersCollection.insertOne(user);
+    console.log(`user inserted with id ${result.insertedId}`);
+  } finally {
+    //await client.close();
+  }
+}
+run().catch(console.dir);
 
 const users = [
   { id: 1, name: "shabana", email: "shaban@sha.com", phone: "017888888" },
